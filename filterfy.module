@@ -1,0 +1,151 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function filterfy_init() {
+  // Checks which image toolkit we are using.
+  if (variable_get('image_toolkit', 'gd') == 'gd') {
+    module_load_include('inc', 'filterfy', 'filterfy.gd');
+  }
+}
+
+function filterfy_image_effect_info() {
+  return array(
+    'filterfy_image_blackwhite' => array(
+      'label' => t('Black and White'), 
+      'help' => t('Apply a black & white filter effect.'), 
+      'effect callback' => 'filterfy_blackwhite_effect',
+      'form callback' => 'filterfy_blackwhite_form',
+      'summary theme' => 'filterfy_blackwhite_summary',
+    ),
+    'filterfy_image_dreamy' => array(
+      'label' => t('Dreamy'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_dreamy_effect',
+      'form callback' => 'filterfy_dreamy_form',
+      'summary theme' => 'filterfy_dreamy_summary',
+    )
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function filterfy_theme() {
+  return array(
+    'filterfy_filter_summary' => array(
+      'variables' => array('data' => NULL),
+    ),
+  );
+}
+
+/**
+ * Effect configuration form for iek_image_border.
+ */
+function filterfy_blackwhite_form($data) {
+  $form['border_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Border color'),
+    '#default_value' => isset($data['border_color']) ? $data['border_color'] : '#ededed',
+    '#required' => FALSE,
+    '#size' => 10,
+    //'#element_validate' => array('iek_image_effect_color_validate'),
+    '#allow_natural_number' => array('zero', 'positive'),
+  );
+  return $form;
+}
+
+/**
+ * Effect configuration form for iek_image_border.
+ */
+function filterfy_dreamy_form($data) {
+  $form['border_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Border color'),
+    '#default_value' => isset($data['border_color']) ? $data['border_color'] : '#ededed',
+    '#required' => FALSE,
+    '#size' => 10,
+    //'#element_validate' => array('iek_image_effect_color_validate'),
+    '#allow_natural_number' => array('zero', 'positive'),
+  );
+  return $form;
+}
+
+/**
+ * Effect callback for iek_image_border.
+ */
+function filterfy_blackwhite_effect(&$image, $data) {
+  if (!filterfy_image_blackwhite($image, $data)) {
+    watchdog('image', 'Image add border failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for iek_image_border.
+ */
+function filterfy_dreamy_effect(&$image, $data) {
+  if (!filterfy_image_dreamy($image, $data)) {
+    watchdog('image', 'Image add border failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/********************************************************************
+ * Helper functions.
+ ********************************************************************/
+
+/**
+ * Invokes the given method using the currently selected toolkit.
+ *
+ * @param string $method
+ *   A string containing the method to invoke.
+ * @param object $image
+ *   An image object returned by image_load().
+ * @param array $params
+ *   An optional array of parameters to pass to the toolkit method.
+ *
+ * @return bool
+ *   Mixed values (typically Boolean indicating successful operation).
+ */
+function filterfy_toolkit_invoke($method, stdClass $image, array $params = array()) {
+  $function = 'filterfy_' . $image->toolkit . '_' . $method;
+  if (function_exists($function)) {
+    array_unshift($params, $image);
+    return call_user_func_array($function, $params);
+  }
+  watchdog('image', 'The selected image handling toolkit %toolkit can not correctly process %function.', array(
+    '%toolkit' => $image->toolkit,
+    '%function' => $function,
+  ), WATCHDOG_ERROR);
+  return FALSE;
+}
+
+/**
+ * Invoke the image toolkit so user can choose to use GD or ImageMagick.
+ */
+function filterfy_image_blackwhite(stdClass $image, $data) {
+  //$data['border_thick_top'] = (int) round($data['border_thick_top']);
+  //$data['border_thick_right'] = (int) round($data['border_thick_right']);
+  //$data['border_thick_bottom'] = (int) round($data['border_thick_bottom']);
+  //$data['border_thick_left'] = (int) round($data['border_thick_left']);
+  return filterfy_toolkit_invoke('blackwhite', $image, array($data));
+}
+
+/**
+ * Invoke the image toolkit so user can choose to use GD or ImageMagick.
+ */
+function filterfy_image_dreamy(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('dreamy', $image, array($data));
+}
