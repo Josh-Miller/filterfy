@@ -13,71 +13,74 @@ function filterfy_init() {
 function filterfy_image_effect_info() {
   return array(
     'filterfy_image_blackwhite' => array(
-      'label' => t('Black and White'), 
+      'label' => t('Filterfy - Black and White'), 
       'help' => t('Apply a black & white filter effect.'), 
       'effect callback' => 'filterfy_blackwhite_effect',
-      'form callback' => 'filterfy_blackwhite_form',
-      'summary theme' => 'filterfy_blackwhite_summary',
     ),
     'filterfy_image_dreamy' => array(
-      'label' => t('Dreamy'), 
+      'label' => t('Filterfy - Dreamy'), 
       'help' => t('Create filters for photos.'), 
       'effect callback' => 'filterfy_dreamy_effect',
-      'form callback' => 'filterfy_dreamy_form',
-      'summary theme' => 'filterfy_dreamy_summary',
+    ),
+    'filterfy_image_bluevelvet' => array(
+      'label' => t('Filterfy - Blue Velvet'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_bluevelvet_effect',
+    ),
+    'filterfy_image_chrome' => array(
+      'label' => t('Filterfy - Chrome'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_chrome_effect',
+    ),
+    'filterfy_image_lift' => array(
+      'label' => t('Filterfy - Lift'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_lift_effect',
+    ),
+    'filterfy_image_canvas' => array(
+      'label' => t('Filterfy - Canvas'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_canvas_effect',
+    ),
+    'filterfy_image_vintage' => array(
+      'label' => t('Filterfy - Vintage'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_vintage_effect',
+    ),
+    'filterfy_image_monopin' => array(
+      'label' => t('Filterfy - Monopin'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_monopin_effect',
+    ),
+    'filterfy_image_antique' => array(
+      'label' => t('Filterfy - Antique'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_antique_effect',
+    ),
+    'filterfy_image_colorboost' => array(
+      'label' => t('Filterfy - Color Boost'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_colorboost_effect',
+    ),
+    'filterfy_image_sepia' => array(
+      'label' => t('Filterfy - Sepia'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_sepia_effect',
+    ),
+    'filterfy_image_blur' => array(
+      'label' => t('Filterfy - Blur'), 
+      'help' => t('Create filters for photos.'), 
+      'effect callback' => 'filterfy_blur_effect',
     )
   );
 }
 
 /**
- * Implements hook_theme().
- */
-function filterfy_theme() {
-  return array(
-    'filterfy_filter_summary' => array(
-      'variables' => array('data' => NULL),
-    ),
-  );
-}
-
-/**
- * Effect configuration form for iek_image_border.
- */
-function filterfy_blackwhite_form($data) {
-  $form['border_color'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Border color'),
-    '#default_value' => isset($data['border_color']) ? $data['border_color'] : '#ededed',
-    '#required' => FALSE,
-    '#size' => 10,
-    //'#element_validate' => array('iek_image_effect_color_validate'),
-    '#allow_natural_number' => array('zero', 'positive'),
-  );
-  return $form;
-}
-
-/**
- * Effect configuration form for iek_image_border.
- */
-function filterfy_dreamy_form($data) {
-  $form['border_color'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Border color'),
-    '#default_value' => isset($data['border_color']) ? $data['border_color'] : '#ededed',
-    '#required' => FALSE,
-    '#size' => 10,
-    //'#element_validate' => array('iek_image_effect_color_validate'),
-    '#allow_natural_number' => array('zero', 'positive'),
-  );
-  return $form;
-}
-
-/**
- * Effect callback for iek_image_border.
+ * Effect callback for filterfy_image_blackwhite.
  */
 function filterfy_blackwhite_effect(&$image, $data) {
   if (!filterfy_image_blackwhite($image, $data)) {
-    watchdog('image', 'Image add border failed using the %toolkit toolkit on %path (%mimetype)', array(
+    watchdog('image', 'Image add black and white effect failed using the %toolkit toolkit on %path (%mimetype)', array(
       '%toolkit' => $image->toolkit,
       '%path' => $image->source,
       '%mimetype' => $image->info['mime_type'],
@@ -88,11 +91,161 @@ function filterfy_blackwhite_effect(&$image, $data) {
 }
 
 /**
- * Effect callback for iek_image_border.
+ * Effect callback for filterfy_image_dreamy.
  */
 function filterfy_dreamy_effect(&$image, $data) {
   if (!filterfy_image_dreamy($image, $data)) {
-    watchdog('image', 'Image add border failed using the %toolkit toolkit on %path (%mimetype)', array(
+    watchdog('image', 'Image add dreamy effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_bluevelvet.
+ */
+function filterfy_bluevelvet_effect(&$image, $data) {
+  if (!filterfy_image_bluevelvet($image, $data)) {
+    watchdog('image', 'Image add blue velvet effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_chrome.
+ */
+function filterfy_chrome_effect(&$image, $data) {
+  if (!filterfy_image_chrome($image, $data)) {
+    watchdog('image', 'Image add chrome effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_lift.
+ */
+function filterfy_lift_effect(&$image, $data) {
+  if (!filterfy_image_lift($image, $data)) {
+    watchdog('image', 'Image add lift effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_canvas.
+ */
+function filterfy_canvas_effect(&$image, $data) {
+  if (!filterfy_image_canvas($image, $data)) {
+    watchdog('image', 'Image add canvas effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_vintage.
+ */
+function filterfy_vintage_effect(&$image, $data) {
+  if (!filterfy_image_vintage($image, $data)) {
+    watchdog('image', 'Image add vintage effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_monopin.
+ */
+function filterfy_monopin_effect(&$image, $data) {
+  if (!filterfy_image_monopin($image, $data)) {
+    watchdog('image', 'Image add monopin effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_antique.
+ */
+function filterfy_antique_effect(&$image, $data) {
+  if (!filterfy_image_antique($image, $data)) {
+    watchdog('image', 'Image add antique effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_colorboost.
+ */
+function filterfy_colorboost_effect(&$image, $data) {
+  if (!filterfy_image_colorboost($image, $data)) {
+    watchdog('image', 'Image add color boost effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_sepia.
+ */
+function filterfy_sepia_effect(&$image, $data) {
+  if (!filterfy_image_sepia($image, $data)) {
+    watchdog('image', 'Image add sepia effect failed using the %toolkit toolkit on %path (%mimetype)', array(
+      '%toolkit' => $image->toolkit,
+      '%path' => $image->source,
+      '%mimetype' => $image->info['mime_type'],
+    ), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Effect callback for filterfy_image_blur.
+ */
+function filterfy_blur_effect(&$image, $data) {
+  if (!filterfy_image_blur($image, $data)) {
+    watchdog('image', 'Image add blur effect failed using the %toolkit toolkit on %path (%mimetype)', array(
       '%toolkit' => $image->toolkit,
       '%path' => $image->source,
       '%mimetype' => $image->info['mime_type'],
@@ -136,16 +289,49 @@ function filterfy_toolkit_invoke($method, stdClass $image, array $params = array
  * Invoke the image toolkit so user can choose to use GD or ImageMagick.
  */
 function filterfy_image_blackwhite(stdClass $image, $data) {
-  //$data['border_thick_top'] = (int) round($data['border_thick_top']);
-  //$data['border_thick_right'] = (int) round($data['border_thick_right']);
-  //$data['border_thick_bottom'] = (int) round($data['border_thick_bottom']);
-  //$data['border_thick_left'] = (int) round($data['border_thick_left']);
   return filterfy_toolkit_invoke('blackwhite', $image, array($data));
 }
 
-/**
- * Invoke the image toolkit so user can choose to use GD or ImageMagick.
- */
 function filterfy_image_dreamy(stdClass $image, $data) {
   return filterfy_toolkit_invoke('dreamy', $image, array($data));
+}
+
+function filterfy_image_bluevelvet(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('bluevelvet', $image, array($data));
+}
+
+function filterfy_image_chrome(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('chrome', $image, array($data));
+}
+
+function filterfy_image_lift(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('lift', $image, array($data));
+}
+
+function filterfy_image_canvas(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('canvas', $image, array($data));
+}
+
+function filterfy_image_vintage(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('vintage', $image, array($data));
+}
+
+function filterfy_image_monopin(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('monopin', $image, array($data));
+}
+
+function filterfy_image_antique(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('antique', $image, array($data));
+}
+
+function filterfy_image_colorboost(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('colorboost', $image, array($data));
+}
+
+function filterfy_image_sepia(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('sepia', $image, array($data));
+}
+
+function filterfy_image_blur(stdClass $image, $data) {
+  return filterfy_toolkit_invoke('blur', $image, array($data));
 }
