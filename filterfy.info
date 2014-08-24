@@ -1,1 +1,8 @@
 name = Filterfy
+description = Creates image style filters.
+core = 7.x
+package = Media
+files[] = filterfy.module
+
+dependencies[] = image
+configure = admin/config/media/filterfy
