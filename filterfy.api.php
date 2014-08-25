@@ -7,6 +7,8 @@
 
 /**
  * Alter the image affect to apply custom filters and effects.
+ * The example below can be applied to all image filters using
+ * the function name. ex. hook_filterfy_FILTER_alter
  *
  * @param object $image
  *   The Image object that can be manipulated.
